@@ -1,0 +1,72 @@
+.phoneframe {
+    border-width: 2px;
+    border-style: solid;
+    border-color: black;
+    border-radius: 5vh;
+
+    display: inline-block;
+    /**/
+    width: 300px;
+    height: 580px;
+    padding: 0px;
+    /*z-index: 1;/**/
+
+    background-color: black;
+    position: relative;
+}
+
+.phonebar {
+    border-width: 2px;
+    border-style: solid;
+    border-color: white;
+    border-radius: 1vh;
+
+    /* 手機寬302 高602 */
+    width: 120px;
+    height: 15px;
+    /*z-index: 2;/**/
+    padding: 0px;
+
+    background-color: white;
+    position: absolute;
+
+    top: 15px;
+    left: 88px;
+}
+
+.phonecircle {
+    border-width: 2px;
+    border-style: solid;
+    border-color: white;
+    border-radius: 50%;
+
+    width: 40px;
+    height: 40px;
+    /*z-index: 2;/**/
+    padding: 0px;
+
+    background-color: white;
+    position: absolute;
+
+    top: 520px;
+    left: 130px;
+}
+
+.window {
+    border-width: 2px;
+    border-style: solid;
+    border-color: black;
+    display: inline-block;
+
+    width: 270px;
+    height: 450px;
+    /*z-index: 3;/**/
+    margin: 0px;
+
+    position: relative;
+    background-image: url("../img/background.jpg");
+    background-size: cover;
+
+    top: 48px;
+    left: 15px;
+}

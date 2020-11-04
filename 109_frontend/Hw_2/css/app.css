@@ -1,0 +1,118 @@
+.icon-circle {
+    border-width: 2px;
+    border-color: transparent;
+    border-radius: 50%;
+    border-style: solid;
+    display: inline-block;
+    color: transparent;
+
+    width: 35px;
+    height: 35px;
+    z-index: 0;
+    margin: 6px;
+    margin-bottom: 0px;
+    /**/
+
+    position: relative;
+    left: 10px;
+    top: 35px;
+}
+
+.icon-rect {
+    border-width: 2px;
+    border-color: transparent;
+    border-radius: 2vh;
+    border-style: solid;
+    display: inline-block;
+
+    width: 35px;
+    height: 35px;
+    z-index: 0;
+    margin: 6px;
+    margin-bottom: 0px;
+    /**/
+
+    position: relative;
+    left: 10px;
+    top: 35px;
+}
+
+.icon-name {
+    display: inline-block;
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent;
+
+    width: 40px;
+    height: 15px;
+    z-index: 0px;
+
+    position: relative;
+    left: 10px;
+    top: 35px;
+    margin: 2.5px;
+    margin-top: 0px;
+
+    font-size: 5px;
+    font-family: 微軟正黑體, monospace;
+    color: white;
+    text-align: center;
+}
+
+.i-hornet {
+    background-image: url(../img/Hornet3.png);
+    background-size: cover;
+
+}
+
+.i-messenger {
+    background-image: url(../img/messenger.png);
+    background-size: cover;
+}
+
+.i-line {
+    background-size: cover;
+    background-image: url(../img/Line.png);
+    background-position-x: -15px;
+    background-position-y: 1px;
+}
+
+.i-FGO {
+    background-size: cover;
+    background-image: url(../img/FGO.jpg);
+}
+
+.i-tinder {
+    background-size: cover;
+    background-image: url(../img/Tinder.jpg);
+}
+
+.i-bank {
+    background-size: cover;
+    background-image: url(../img/Bank.png);
+}
+
+.i-family {
+    background-size: cover;
+    background-image: url(../img/Family.jpg);
+    background-position-x: -5px;
+}
+
+.i-ig {
+    background-size: contain;
+    background-image: url(../img/IG.png);
+}
+
+.i-fb {
+    background-size: cover;
+    /**/
+    background-image: url(../img/FB.png);
+    background-position-x: -3.3px;
+    background-position-y: -1.7px;
+
+}
+
+.i-spotify {
+    background-size: cover;
+    background-image: url(../img/Spotify.png);
+}
