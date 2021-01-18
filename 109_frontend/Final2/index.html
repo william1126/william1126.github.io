@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>等下吃什麼</title>
+    <!--初始化-->
+    <link rel="canonical" href="https://letswritetw.github.io/letswrite-food-check/" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./css/bar_style.css">
+    <link rel="stylesheet" href="./css/style.css" type="text/css">
+
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://lib.baomitu.com/lodash.js/4.14.1/lodash.min.js"></script>
+    <!--Openlayers-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.1.1/css/ol.css" type="text/css">
+    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.1.1/build/ol.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.4.4/proj4.js'></script>
+    
+
+</head>
+  <body>
+
+    <!-- Google Tag Manager (noscript)-->
+	  <noscript>
+		   <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PGQ9WQT" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+	  </noscript>
+    <!--導覽列-->
+    <nav class="nav navbar-inverse">
+      <div class="container-fluid">
+        <!--第一個div-->
+        <div class="navbar-header">
+          <!--當網頁變小的時候，圖層列表和功能會隱藏起來，然後用按鈕控制(toggle)-->
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <!--讓按鈕上出現三條線-->
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="#" class="navbar-brand">等下吃什麼</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <!--功能選單(toggle出現在旁邊)-->
+          <ul class="nav navbar-nav">
+            <li><a data-toggle="tab" href="#layerlist" id="nav_layerlist">選單</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!--放功能的地方-->
+    <div id="container">
+      <!--早餐抽獎的dialog-->
+      <div class="modal fade" id="dialog2" tabindex="-1" role="dialog" aria-labelledby="dialog2-title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centerd" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h2 class="modal-title" id="dialog2-title">早餐吃什麼</h2>
+            </div>
+            <div class="modal-body">
+                <div class="main-block">
+                  <div id="title" class="title">早餐是重要的一餐~</div>
+                  <div class="btns">
+                  <span id="play">開 始</span>
+                  <span id="stop">停 止</span>
+                  </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-miss='modal' id="closeBtn2">關閉</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script type="text/javascript">
+        var data = ['吃吐吧', '雪球咖啡', '麥味登', '安好食', '全家', '小木屋鬆餅', '活大', '女九','摩斯漢堡','7-ELEVEN','豬ㄟ早餐店'],
+            timer = null, //定時器
+            flag = 0;
+        $(function(){
+          $('#alertBtn2').click(function(){
+            $('#dialog2').modal('show');
+          });
+          $('#closeBtn2').click(function(){
+            $('#dialog2').modal('hide')
+          });
+          $('#play').click(function(){
+            var title = document.getElementById('title');
+            var play = document.getElementById('play');
+            //每次都先清除上一次的定時器任務，避免抽獎效果累加頻率會越來越快
+            clearInterval(timer);
+            timer = setInterval(function() {
+                var random = Math.floor(Math.random() * data.length);
+                title.innerHTML = data[random];
+            }, 50);
+            play.style.background = '#999';
+          
+          });
+          $('#stop').click(function(){
+            clearInterval(timer);
+            var play = document.getElementById('play');
+            play.style.background = '#036';
+          });
+        });
+      </script>
+
+      <!--午餐/晚餐抽獎的dialog-->
+      <div class="modal fade" id="dialog1" tabindex="-1" role="dialog" aria-labelledby="dialog1-title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centerd" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h2 class="modal-title" id="dialog1-title">诶诶你午餐/晚餐吃什麼</h2>
+            </div>
+            <div class="modal-body">
+                <div class="main-block">
+                  <div id="title1" class="title">我想吃...</div>
+                  <div class="btns">
+                  <span id="play1">開 始</span>
+                  <span id="stop1">停 止</span>
+                  </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-miss='modal' id="closeBtn1">關閉</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script type="text/javascript">
+        $(function(){
+          $('#alertBtn1').click(function(){
+            $('#dialog1').modal('show');
+          });
+          $('#closeBtn1').click(function(){
+            $('#dialog1').modal('hide')
+          });
+        });
+      </script>
+      <script src="./js/lottery1.js"></script>
+      <div id="sidebar" style="display:none">
+        <div id="accordion">
+          <h3>等等要吃哪一餐
+            <!--按鈕(toggle)-->
+            <button type="button" id="btn-hide" class="btn btn-xs btn-default pull-right" id="sidebar-hide-btn"><i class="fa fa-chevron-left"></i></button>
+          </h3>
+          <div id="acc_layerlist">
+            <button class="btn btn-info float-left" id="alertBtn2">早餐吃什麼</button>
+            <button class="btn btn-info float-left" id="alertBtn1">午餐/晚餐吃什麼</button>
+          </div>
+          <h3>餐廳在哪裡
+            <h4 id="Mylist">餐廳點資料</h4>
+          </h3>
+        </div>
+      </div>
+      <div id="map"></div>
+    </div>
+    <script src="./js/map.js"></script>
+    <script src="./js/main.js"></script>
+    
+    
+    
+  </body>
+</html>
