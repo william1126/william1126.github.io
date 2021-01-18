@@ -1,0 +1,490 @@
+{	
+
+	"type": "FeatureCollection",
+	"name": "restaurant",
+	"crs": {
+		"type": "name",
+		"properties": {
+			"name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+		}
+	},
+	"features": [
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					121.5426248,
+					25.0220363,
+					0
+				]
+			},
+			"properties": {
+				"Restaurant": "微笑廚房洋食館",
+				"Address": "台北市大安區和平東路二段118巷54弄3號",
+				"Tel": "0227363396",
+				"Discount": "享九折優惠"
+			}
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					121.5341584,
+					25.0136247,
+					0
+				]
+			},
+			"properties": {
+				"Restaurant": "公館清蒸肉圓",
+				"Address": "台北市中正區汀州路三段150號",
+				"Tel": "0223655850",
+				"Discount": "肉圓加四神湯組合折5元"
+			}
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					121.5326131,
+					25.0156061,
+					0
+				]
+			},
+			"properties": {
+				"Restaurant": "頑固石板料理 拉麵 蛋包飯",
+				"Address": "台北市中正區羅斯福路三段316巷8弄3之3號",
+				"Tel": "0223642332",
+				"Discount": "餐點折價20元，五人以上送炸豆腐"
+			}
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					121.5331111,
+					25.0188155,
+					0
+				]
+			},
+			"properties": {
+				"Restaurant": "轉轉發現義大利麵",
+				"Address": "台北市大安區新生南路三段86巷6號",
+				"Tel": "0223673721",
+				"Discount": "10人點餐，每人折10元。外帶不分口味皆120元",
+				"Birthday": "壽星憑證半價或加贈紫米牛奶一杯"
+			}
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					121.5325444,
+					25.0171498,
+					0
+				]
+			},
+			"properties": {
+				"Restaurant": "上賀麵食館",
+				"Address": "台北市大安區羅斯福路三段333巷2-1號",
+				"Tel": "0223690728",
+				"Discount": "享免費小菜一份"
+			}
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					121.53353,
+					25.020395,
+					0
+				]
+			},
+			"properties": {
+				"Restaurant": "感恩小館",
+				"Address": "台北市大安區新生南路三段56巷6號",
+				"Tel": "0223660580",
+				"Discount": "套餐九折優惠"
+			}
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					121.5306538,
+					25.0165396,
+					0
+				]
+			},
+			"properties": {
+				"Restaurant": "#BFF Gossip Brunch 早午餐-公館店",
+				"Address": "台北市中正區羅斯福路三段244巷14號",
+				"Tel": "0966938192",
+				"Discount": "點主餐送值80元鮭蜜濃湯"
+			}
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					121.5326122,
+					25.0153533,
+					0
+				]
+			},
+			"properties": {
+				"Restaurant": "龍涎居(公館店)",
+				"Address": "台北市中正區羅斯福路三段316巷8弄12-1號",
+				"Tel": "0223687535",
+				"Discount": "消費任何湯類送價值30元酸梅汁或蜂蜜綠"
+			}
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					121.53126520000001,
+					25.0158157,
+					0
+				]
+			},
+			"properties": {
+				"Restaurant": "萃茶風·大享食",
+				"Address": "台北市中正區汀州路三段151號",
+				"Tel": "0223671119",
+				"Discount": "一份主餐加一杯飲料九八折"
+			}
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					121.534218,
+					25.014172,
+					0
+				]
+			},
+			"properties": {
+				"Restaurant": "No.9聚會空間(９號聚會空間)",
+				"Address": "台北市中正區羅斯福路四段78巷1弄9號",
+				"Tel": "0223691808",
+				"Discount": "出示學生證：平日每人消費150元贈送50元茶飲。出示line：升級送60元茶飲。"
+			}
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					121.535727,
+					25.0120099,
+					0
+				]
+			},
+			"properties": {
+				"Restaurant": "L.A.F BURGER 拉芙漢堡",
+				"Address": "台北市中正區汀州路三段293號",
+				"Tel": "0930953911",
+				"Discount": "IG發限時動態，1~4人享100元開胃菜一份，5人以上享160元開胃菜一份"
+			}
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					121.53236,
+					25.015861,
+					0
+				]
+			},
+			"properties": {
+				"Restaurant": "Shishlik Pita x Kebab 西西里克中東口袋餅(外帶店)",
+				"Address": "台北市中正區羅斯福路三段286巷18號",
+				"Tel": "0987921413",
+				"Discount": "享九折優惠"
+			}
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					121.5323846,
+					25.0162197,
+					0
+				]
+			},
+			"properties": {
+				"Restaurant": "魚雷起司三明治&薯條",
+				"Address": "台北市中正區羅斯福路三段286巷",
+				"Tel": "無",
+				"Discount": "購買三明治折五元"
+			}
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					121.5322458,
+					25.0156403,
+					0
+				]
+			},
+			"properties": {
+				"Restaurant": "戰醬燒肉/台北燒肉/台北吃到飽/台北燒肉吃到飽/台北烤肉/公館美食/公館吃到飽",
+				"Address": "台北市中正區羅斯福路三段316巷7-3號",
+				"Tel": "0223659719",
+				"Discount": "消費享九五折優惠"
+			}
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					121.532258,
+					25.0187623,
+					0
+				]
+			},
+			"properties": {
+				"Restaurant": "Lazy徠集",
+				"Address": "台北市大安區新生南路三段86巷17號",
+				"Tel": "無",
+				"Discount": "享六吋生日蛋糕優惠價280元(限同一口味)"
+			}
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					121.5427963,
+					25.0237379,
+					0
+				]
+			},
+			"properties": {
+				"Restaurant": "Ooh Cha Cha 自然食科技大樓 & Hooch",
+				"Address": "台北市大安區和平東路二段118巷4之1號",
+				"Tel": "0227372994",
+				"Discount": "消費享九折優惠"
+			}
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					121.53223,
+					25.0152103,
+					0
+				]
+			},
+			"properties": {
+				"Restaurant": "何太守港式菠蘿包專賣店",
+				"Address": "台北市中正區汀州路三段167號",
+				"Tel": "0223680006",
+				"Discount": "消費享九五折優惠"
+			}
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					121.5427824,
+					25.0231064,
+					0
+				]
+			},
+			"properties": {
+				"Restaurant": "Oneway CAFE玩味咖啡",
+				"Address": "台北市大安區和平東路二段118巷38-1號",
+				"Tel": "0227361000",
+				"Discount": "消費享九五折優惠"
+			}
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					121.5429156,
+					25.0233642,
+					0
+				]
+			},
+			"properties": {
+				"Restaurant": "貝倫烘焙餐坊 台北店",
+				"Address": "台北市大安區和平東路二段118巷37號",
+				"Tel": "0227323391",
+				"Discount": "消費享九折優惠"
+			}
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					121.5341229,
+					25.013647,
+					0
+				]
+			},
+			"properties": {
+				"Restaurant": "阿剛泰式主題餐廳",
+				"Address": "台北市中正區汀州路三段150號",
+				"Tel": "0223644278",
+				"Discount": "消費享九折優惠或甜點一份"
+			}
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					121.543663,
+					25.0238332,
+					0
+				]
+			},
+			"properties": {
+				"Restaurant": "米堤銀行Milkteabank︱鮮乳 · 茶",
+				"Address": "台北市大安區復興南路二段327號",
+				"Tel": "0227389238",
+				"Discount": "消費享滿100元九折優惠"
+			}
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					121.5322572,
+					25.0151912,
+					0
+				]
+			},
+			"properties": {
+				"Restaurant": "初牛 台北公館店",
+				"Address": "台北市中正區汀州路三段169號1樓",
+				"Tel": "0223650393",
+				"Discount": "FB打卡設公開並寫上「台大師生買肉送肉」，消費269以上丼飯享69元唐揚炸雞或薯條二選一"
+			}
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					121.5422473,
+					25.0221187,
+					0
+				]
+			},
+			"properties": {
+				"Restaurant": "淺草日式飯糰",
+				"Address": "台北市大安區和平東路二段118巷54弄13號",
+				"Tel": "0227370158",
+				"Discount": "消費滿200元送紅茶一杯"
+			}
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					121.5328707,
+					25.0149813,
+					0
+				]
+			},
+			"properties": {
+				"Restaurant": "YU POKÉ-夏威夷生魚飯",
+				"Address": "台北市中正區羅斯福路四段24巷12弄4號",
+				"Tel": "0223684282",
+				"Discount": "消費享甜點折5元"
+			}
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					121.541184,
+					25.022835,
+					0
+				]
+			},
+			"properties": {
+				"Restaurant": "溫州大餛飩麵",
+				"Address": "台北市大安區辛亥路二段171巷27號",
+				"Tel": "無",
+				"Discount": "消費滿200元送冷泡茶，消費300元送滷蛋"
+			}
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					121.5321689,
+					25.0152694,
+					0
+				]
+			},
+			"properties": {
+				"Restaurant": "松町和風小舖",
+				"Address": "台北市中正區汀州路三段165號1樓",
+				"Tel": "0223681323",
+				"Discount": "免收服務費"
+			}
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					121.5321939,
+					25.0412127,
+					0
+				]
+			},
+			"properties": {
+				"Restaurant": "Miss Strega Cafe & bar 義大利女巫咖啡酒吧",
+				"Address": "台北市中正區新生南路一段54巷12號",
+				"Tel": "0223218590",
+				"Discount": "消費享酒水、女巫系列瓶裝酒九折"
+			}
+		},
+		{
+			"type": "Feature",
+			"geometry": {
+				"type": "Point",
+				"coordinates": [
+					121.5429609,
+					25.0232555,
+					0
+				]
+			},
+			"properties": {
+				"Restaurant": "Midori 米多麗小館",
+				"Address": "台北市大安區和平東路二段118巷39號1F",
+				"Tel": "0227385356",
+				"Discount": "外帶享五元折扣"
+			}
+		}
+	]
+}
