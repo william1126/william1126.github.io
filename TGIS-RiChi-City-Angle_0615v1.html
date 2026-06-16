@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鄉鎮市區地理方位猜謎 - V5 固定看板不重疊版</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #212529;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            margin-bottom: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: #1a1a1a;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 40px;
+        }
+
+        /* --- 核心佈局區域 --- */
+        .quiz-layout {
+            position: relative;
+            width: 100%;
+            height: 520px;
+            margin-top: 10px;
+        }
+
+        /* 中央羅盤大圓圈 */
+        .center-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle, transparent 40%, #f1f3f5 40%, #f1f3f5 41%, transparent 42%),
+                radial-gradient(circle, transparent 70%, #e9ecef 70%, #e9ecef 71%, transparent 72%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+
+        .center-node {
+            width: 100px;
+            height: 100px;
+            background-color: #ffffff;
+            border: 3px solid #212529;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .center-node .label {
+            font-size: 11px;
+            color: #868e96;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .center-node .question {
+            font-size: 28px;
+            font-weight: 900;
+            color: #212529;
+            margin-top: 2px;
+        }
+
+        /* --- 動態物理模擬看板設計 --- */
+        .fixed-card {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 155px;
+            background: #ffffff;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 10px 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            z-index: 15;
+            transition: border-color 0.2s;
+            will-change: transform;
+        }
+
+        /* 增加編號角標 */
+        /* .fixed-card::after {
+            content: attr(data-index);
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            width: 20px;
+            height: 20px;
+            background: #ef4444;
+            color: #fff;
+            border-radius: 50%;
+            font-size: 11px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        } */
+
+        .fixed-card .town-name {
+            font-size: 16px;
+            font-weight: bold;
+            color: #212529;
+            margin-bottom: 2px;
+        }
+
+        .fixed-card .town-dist {
+            font-size: 13px;
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        /* --- 控制面板區域 --- */
+        .control-panel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #ffffff;
+            padding: 16px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 220px;
+            z-index: 1000;
+            border: 1px solid #dee2e6;
+        }
+
+        .control-panel label {
+            font-size: 12px;
+            font-weight: bold;
+            color: #495057;
+        }
+
+        .control-panel select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ced4da;
+            font-size: 14px;
+            background-color: #fff;
+            cursor: pointer;
+        }
+
+        .control-panel button {
+            width: 100%;
+            padding: 10px;
+            background-color: #212529;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .control-panel button:hover {
+            background-color: #495057;
+        }
+
+        .answer-box {
+            margin-top: 15px;
+            padding: 12px;
+            background-color: #e8f5e9;
+            border: 1px solid #c8e6c9;
+            color: #2e7d32;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1 id="quiz-title">地理猜謎：題庫 1</h1>
+        <div class="subtitle">依據與周圍鄉鎮市區公所的距離與箭頭方位，猜猜中心點是哪裡？</div>
+
+        <div class="quiz-layout">
+            <!-- SVG 引導線與箭頭 -->
+            <svg id="guide-svg"
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5;">
+                <defs>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                        <path d="M 0,0 L 10,3.5 L 0,7 Z" fill="#212529" />
+                    </marker>
+                </defs>
+                <g id="guide-lines-group"></g>
+                <g id="arrows-group"></g>
+                <g id="badges-group"></g>
+            </svg>
+
+            <!-- 中央羅盤 -->
+            <div class="center-wrapper" id="compass-area">
+                <div class="center-node">
+                    <span class="label">TOWN</span>
+                    <span class="question">?</span>
+                </div>
+            </div>
+
+            <!-- 四周看板 (由 JS 物理模擬動態定位) -->
+            <div id="card-0" class="fixed-card" data-index="0"></div>
+            <div id="card-1" class="fixed-card" data-index="1"></div>
+            <div id="card-2" class="fixed-card" data-index="2"></div>
+            <div id="card-3" class="fixed-card" data-index="3"></div>
+            <div id="card-4" class="fixed-card" data-index="4"></div>
+        </div>
+    </div>
+
+    <div class="control-panel">
+        <label for="quiz-select">選擇題庫 (共 40 題)</label>
+        <select id="quiz-select" onchange="loadQuiz(this.value)"></select>
+        <button id="show-answer-btn" onclick="toggleAnswer()">顯示答案</button>
+        <div id="answer-display" class="answer-box"></div>
+    </div>
+
+    <script>
+        // 乾淨完整的 30 題核心資料
+        const quizData = [
+           { id: 1, target: '台北市大安區', hints: [{ name: '台北市松山區', distance: 5, azi: 58.7 }, { name: '台北市信義區', distance: 4.9, azi: 75.2 }, { name: '新北市新店區', distance: 6.6, azi: 173.3 }, { name: '新北市永和區', distance: 2.4, azi: 216.4 }, { name: '台北市中正區', distance: 1.8, azi: 291.1 }] },
+{ id: 2, target: '高雄市苓雅區', hints: [{ name: '高雄市鳥松區', distance: 6.8, azi: 52 }, { name: '高雄市鳳山區', distance: 5.2, azi: 83.7 }, { name: '高雄市前鎮區', distance: 3.9, azi: 170.9 }, { name: '高雄市鹽埕區', distance: 2.6, azi: 277.6 }, { name: '高雄市新興區', distance: 1.1, azi: 347.7 }] },
+{ id: 3, target: '台中市中區', hints: [{ name: '台中市北屯區', distance: 4.4, azi: 9.6 }, { name: '台中市東區', distance: 2.6, azi: 108.2 }, { name: '台中市南區', distance: 3.4, azi: 208.6 }, { name: '台中市西區', distance: 0.9, azi: 250.8 }, { name: '台中市西屯區', distance: 5.2, azi: 297.2 }] },
+{ id: 4, target: '台南市中西區', hints: [{ name: '台南市永康區', distance: 6.5, azi: 54.8 }, { name: '台南市東區', distance: 2.3, azi: 125.7 }, { name: '台南市南區', distance: 3.9, azi: 207 }, { name: '台南市安平區', distance: 3.8, azi: 274.2 }, { name: '台南市北區', distance: 0.9, azi: 341.3 }] },
+{ id: 5, target: '新北市板橋區', hints: [{ name: '台北市萬華區', distance: 5, azi: 55.4 }, { name: '新北市中和區', distance: 4.4, azi: 106.1 }, { name: '新北市土城區', distance: 4.4, azi: 201.6 }, { name: '新北市樹林區', distance: 4.1, azi: 237.7 }, { name: '新北市新莊區', distance: 3, azi: 343.5 }] },
+{ id: 6, target: '台南市玉井區', hints: [{ name: '台南市楠西區', distance: 6.2, azi: 25.9 }, { name: '高雄市甲仙區', distance: 13.8, azi: 108.9 }, { name: '高雄市左鎮區', distance: 9.1, azi: 215.6 }, { name: '台南市山上區', distance: 11.2, azi: 258.8 }, { name: '台南市大內區', distance: 10.6, azi: 267.4 }] },
+{ id: 7, target: '台北市松山區', hints: [{ name: '台北市內湖區', distance: 2.5, azi: 28.6 }, { name: '台北市南港區', distance: 3, azi: 79.9 }, { name: '台北市文山區', distance: 6.7, azi: 185.9 }, { name: '台北市大同區', distance: 6.5, azi: 285.9 }, { name: '台北市士林區', distance: 7.5, azi: 309.2 }] },
+{ id: 8, target: '雲林縣古坑鄉', hints: [{ name: '雲林縣林內鄉', distance: 13.6, azi: 22.6 }, { name: '嘉義縣阿里山鄉', distance: 24.5, azi: 140.9 }, { name: '嘉義縣梅山鄉', distance: 6.4, azi: 186 }, { name: '嘉義縣大林鎮', distance: 10.2, azi: 245.2 }, { name: '雲林縣斗六市', distance: 7, azi: 329.4 }] },
+{ id: 9, target: '桃園市中壢區', hints: [{ name: '桃園市桃園區', distance: 8.4, azi: 67.9 }, { name: '桃園市八德區', distance: 7.3, azi: 124 }, { name: '桃園市平鎮區', distance: 2.3, azi: 197.4 }, { name: '桃園市楊梅區', distance: 10, azi: 234.2 }, { name: '桃園市大園區', distance: 11.3, azi: 344.6 }] },
+{ id: 10, target: '台南市麻豆區', hints: [{ name: '台南市下營區', distance: 5.6, azi: 6.5 }, { name: '台南市官田區', distance: 5.9, azi: 81.6 }, { name: '台南市善化區', distance: 7, azi: 146.3 }, { name: '台南市佳里區', distance: 8.6, azi: 255.7 }, { name: '台南市學甲區', distance: 9.3, azi: 303.3 }] },
+{ id: 11, target: '新北市泰山區', hints: [{ name: '新北市五股區', distance: 2.7, azi: 14.2 }, { name: '新北市新莊區', distance: 3.2, azi: 142.9 }, { name: '新北市板橋區', distance: 6.2, azi: 152.9 }, { name: '桃園市龜山區', distance: 12, azi: 231.8 }, { name: '新北市林口區', distance: 4.7, azi: 294.2 }] },
+{ id: 12, target: '雲林縣北港鎮', hints: [{ name: '雲林縣元長鄉', distance: 7.6, azi: 13.7 }, { name: '嘉義縣新港鄉', distance: 5.6, azi: 111.6 }, { name: '嘉義縣六腳鄉', distance: 9.2, azi: 187.8 }, { name: '雲林縣水林鄉', distance: 5.8, azi: 266.9 }, { name: '雲林縣四湖鄉', distance: 10.5, azi: 311.1 }] },
+{ id: 13, target: '南投縣信義鄉', hints: [{ name: '南投縣水里鄉', distance: 12.7, azi: 0.8 }, { name: '花蓮縣萬榮鄉', distance: 56.8, azi: 87.9 }, { name: '嘉義縣阿里山鄉', distance: 28.8, azi: 210 }, { name: '雲林縣林內鄉', distance: 25.5, azi: 285.1 }, { name: '南投縣鹿谷鄉', distance: 11.6, azi: 297.9 }] },
+{ id: 14, target: '嘉義縣阿里山鄉', hints: [{ name: '南投縣信義鄉', distance: 28.8, azi: 30 }, { name: '花蓮縣卓溪鄉', distance: 61.8, azi: 102.9 }, { name: '高雄市那瑪夏區', distance: 21.5, azi: 178.3 }, { name: '嘉義縣番路鄉', distance: 16.3, azi: 267.5 }, { name: '嘉義縣竹崎鄉', distance: 17.6, azi: 289.2 }] },
+{ id: 15, target: '新北市深坑區', hints: [{ name: '新北市汐止區', distance: 8.1, azi: 32.3 }, { name: '新北市石碇區', distance: 4.4, azi: 105.7 }, { name: '新北市烏來區', distance: 16, azi: 205.1 }, { name: '台北市文山區', distance: 4.8, azi: 252.6 }, { name: '台北市南港區', distance: 5.8, azi: 350.7 }] },
+{ id: 16, target: '台中市烏日區', hints: [{ name: '台中市豐原區', distance: 18, azi: 32.4 }, { name: '南投縣國姓鄉', distance: 24.8, azi: 106.9 }, { name: '彰化縣員林市', distance: 16.9, azi: 197.5 }, { name: '彰化縣鹿港鎮', distance: 19.9, azi: 254.9 }, { name: '台中市梧棲區', distance: 19.1, azi: 330.8 }] },
+{ id: 17, target: '新北市八里區', hints: [{ name: '新北市三芝區', distance: 15, azi: 39.7 }, { name: '台北市士林區', distance: 13.3, azi: 120.4 }, { name: '新北市泰山區', distance: 10.8, azi: 166.1 }, { name: '桃園市中壢區', distance: 27.7, azi: 221 }, { name: '連江縣南竿鄉', distance: 184.2, azi: 307.1 }] },
+{ id: 18, target: '新北市中和區', hints: [{ name: '台北市內湖區', distance: 11.9, azi: 48.4 }, { name: '新北市深坑區', distance: 11.6, azi: 87.6 }, { name: '新北市烏來區', distance: 14.8, azi: 161 }, { name: '新北市三峽區', distance: 15.1, azi: 241.7 }, { name: '新北市林口區', distance: 14.2, azi: 307.3 }] },
+{ id: 19, target: '台東縣池上鄉', hints: [{ name: '花蓮縣玉里鎮', distance: 25.7, azi: 23.4 }, { name: '台東縣成功鎮', distance: 17.1, azi: 96.2 }, { name: '台東縣臺東市', distance: 41.3, azi: 189.7 }, { name: '台東縣海端鄉', distance: 4.5, azi: 240.1 }, { name: '嘉義縣阿里山鄉', distance: 64.2, azi: 307 }] },
+{ id: 20, target: '屏東縣萬巒鄉', hints: [{ name: '屏東縣瑪家鄉', distance: 17.2, azi: 29.3 }, { name: '台東縣太麻里鄉', distance: 45.4, azi: 84.1 }, { name: '屏東縣枋寮鄉', distance: 23.1, azi: 173.6 }, { name: '高雄市鳳山區', distance: 21.9, azi: 286.2 }, { name: '屏東縣屏東市', distance: 12.6, azi: 321.9 }] },
+{ id: 21, target: '彰化縣鹿港鎮', hints: [{ name: '台中市龍井區', distance: 18.7, azi: 37.1 }, { name: '彰化縣彰化市', distance: 11.2, azi: 76.8 }, { name: '彰化縣二林鎮', distance: 18.5, azi: 199.7 }, { name: '彰化縣芳苑鄉', distance: 18.8, azi: 218.7 }, { name: '金門縣烏坵鄉', distance: 143.3, azi: 316.5 }] },
+{ id: 22, target: '台北市萬華區', hints: [{ name: '新北市萬里區', distance: 24.8, azi: 50.1 }, { name: '台北市南港區', distance: 11, azi: 78.5 }, { name: '新北市烏來區', distance: 18.7, azi: 164.7 }, { name: '桃園市龜山區', distance: 17, azi: 253.7 }, { name: '新北市蘆洲區', distance: 6.1, azi: 334.4 }] },
+{ id: 23, target: '新北市淡水區', hints: [{ name: '新北市石門區', distance: 17, azi: 47.1 }, { name: '台北市士林區', distance: 12.9, azi: 143.5 }, { name: '新北市林口區', distance: 13.4, azi: 204.2 }, { name: '桃園市蘆竹區', distance: 21.6, azi: 223.8 }, { name: '連江縣東引鄉', distance: 162, azi: 323.8 }] },
+{ id: 24, target: '高雄市苓雅區', hints: [{ name: '高雄市燕巢區', distance: 19.2, azi: 15.8 }, { name: '高雄市鳳山區', distance: 5.2, azi: 83.7 }, { name: '高雄市林園區', distance: 14.7, azi: 145.2 }, { name: '高雄市旗津區', distance: 4.5, azi: 219.6 }, { name: '高雄市橋頭區', distance: 15.1, azi: 357.8 }] },
+{ id: 25, target: '彰化縣員林市', hints: [{ name: '台中市烏日區', distance: 16.9, azi: 17.5 }, { name: '南投縣南投市', distance: 12.7, azi: 114.7 }, { name: '彰化縣北斗鎮', distance: 11.1, azi: 209 }, { name: '彰化縣二林鎮', distance: 21.4, azi: 252.4 }, { name: '彰化縣彰化市', distance: 13.9, azi: 346.7 }] },
+{ id: 26, target: '台中市西屯區', hints: [{ name: '苗栗縣苗栗市', distance: 47.7, azi: 23.3 }, { name: '南投縣魚池鄉', distance: 42.8, azi: 134.3 }, { name: '雲林縣斗六市', distance: 53, azi: 192 }, { name: '彰化縣鹿港鎮', distance: 23.5, azi: 239.6 }, { name: '台中市大甲區', distance: 20.4, azi: 356.9 }] },
+{ id: 27, target: '新北市板橋區', hints: [{ name: '新北市萬里區', distance: 29.8, azi: 51 }, { name: '宜蘭縣宜蘭市', distance: 41.2, azi: 133.6 }, { name: '宜蘭縣三星鄉', distance: 42.9, azi: 152.5 }, { name: '桃園市大溪區', distance: 22.5, azi: 230.4 }, { name: '新北市八里區', distance: 16.9, azi: 341.3 }] },
+{ id: 28, target: '新北市土城區', hints: [{ name: '新北市汐止區', distance: 24, azi: 64.9 }, { name: '宜蘭縣礁溪鄉', distance: 37.1, azi: 116.2 }, { name: '宜蘭縣三星鄉', distance: 40.2, azi: 147.7 }, { name: '桃園市觀音區', distance: 36.8, azi: 279.5 }, { name: '新北市八里區', distance: 20.5, azi: 349.4 }] },
+{ id: 29, target: '新北市三峽區', hints: [{ name: '新北市三芝區', distance: 38.2, azi: 20.2 }, { name: '宜蘭縣三星鄉', distance: 41.4, azi: 135.7 }, { name: '高雄市三民區', distance: 275.7, azi: 203.3 }, { name: '苗栗縣三義鄉', distance: 83.7, azi: 226.4 }, { name: '桃園市大園區', distance: 22.6, azi: 309.2 }] },
+{ id: 30, target: '台北市士林區', hints: [{ name: '新北市石門區', distance: 22.5, azi: 12.2 }, { name: '宜蘭縣礁溪鄉', distance: 39.2, azi: 139.3 }, { name: '宜蘭縣三星鄉', distance: 49.2, azi: 163.8 }, { name: '桃園市觀音區', distance: 44.6, azi: 260.6 }, { name: '新北市八里區', distance: 13.3, azi: 300.4 }] },
+{ id: 31, target: '台北市文山區', hints: [{ name: '新北市瑞芳區', distance: 27.6, azi: 61.1 }, { name: '宜蘭縣礁溪鄉', distance: 27.4, azi: 131.9 }, { name: '宜蘭縣三星鄉', distance: 36.9, azi: 166.5 }, { name: '桃園市觀音區', distance: 49.3, azi: 274.8 }, { name: '新北市八里區', distance: 24.6, azi: 317.6 }] },
+{ id: 32, target: '台北市北投區', hints: [{ name: '新北市石門區', distance: 21, azi: 28.2 }, { name: '基隆市七堵區', distance: 25.2, azi: 96.5 }, { name: '宜蘭縣宜蘭市', distance: 50.3, azi: 144.9 }, { name: '桃園市觀音區', distance: 40.3, azi: 254.5 }, { name: '連江縣東引鄉', distance: 169.1, azi: 324.5 }] },
+{ id: 33, target: '新北市永和區', hints: [{ name: '新北市瑞芳區', distance: 31.2, azi: 69 }, { name: '宜蘭縣宜蘭市', distance: 36.9, azi: 140.2 }, { name: '宜蘭縣羅東鎮', distance: 44.4, azi: 145.6 }, { name: '新北市三峽區', distance: 17.4, azi: 241.3 }, { name: '新北市八里區', distance: 19.8, azi: 324.1 }] },
+{ id: 34, target: '新北市林口區', hints: [{ name: '新北市淡水區', distance: 13.4, azi: 24.2 }, { name: '新北市平溪區', distance: 35.7, azi: 98.7 }, { name: '宜蘭縣三星鄉', distance: 52.8, azi: 149.3 }, { name: '桃園市觀音區', distance: 31.3, azi: 260 }, { name: '連江縣東引鄉', distance: 169, azi: 327.8 }] },
+{ id: 35, target: '新北市新店區', hints: [{ name: '新北市瑞芳區', distance: 31.3, azi: 59.6 }, { name: '宜蘭縣宜蘭市', distance: 32, azi: 137.9 }, { name: '宜蘭縣三星鄉', distance: 35.3, azi: 161.1 }, { name: '桃園市中壢區', distance: 32, azi: 269.5 }, { name: '台北市士林區', distance: 14.1, azi: 350.6 }] },
+{ id: 36, target: '新北市中和區', hints: [{ name: '基隆市七堵區', distance: 24.4, azi: 63 }, { name: '宜蘭縣宜蘭市', distance: 37.4, azi: 136.7 }, { name: '南投縣南投市', distance: 145.9, azi: 214.4 }, { name: '桃園市觀音區', distance: 42.3, azi: 274.3 }, { name: '新北市淡水區', distance: 21.7, azi: 344.4 }] },
+{ id: 37, target: '台北市萬華區', hints: [{ name: '新北市石門區', distance: 29.2, azi: 13.4 }, { name: '宜蘭縣宜蘭市', distance: 40.5, azi: 140.5 }, { name: '花蓮縣花蓮市', distance: 117.1, azi: 174.5 }, { name: '苗栗縣苗栗市', distance: 86.5, azi: 232.6 }, { name: '新北市淡水區', distance: 17.8, azi: 341.3 }] },
+{ id: 38, target: '台北市松山區', hints: [{ name: '新北市金山區', distance: 20, azi: 17.2 }, { name: '宜蘭縣礁溪鄉', distance: 31.8, azi: 141.7 }, { name: '南投縣國姓鄉', distance: 133.5, azi: 213 }, { name: '桃園市觀音區', distance: 49.9, azi: 267.1 }, { name: '新北市淡水區', distance: 20.3, azi: 318.3 }] },
+{ id: 39, target: '桃園市中壢區', hints: [{ name: '新北市石門區', distance: 50, azi: 43.6 }, { name: '宜蘭縣宜蘭市', distance: 58.4, azi: 113.7 }, { name: '台中市豐原區', distance: 95.2, azi: 212.6 }, { name: '苗栗縣苗栗市', distance: 60.8, azi: 222.5 }, { name: '連江縣莒光鄉', distance: 171.2, azi: 310.8 }] },
+{ id: 40, target: '新北市深坑區', hints: [{ name: '新北市瑞芳區', distance: 22.9, azi: 58.7 }, { name: '宜蘭縣頭城鎮', distance: 26.4, azi: 128 }, { name: '花蓮縣花蓮市', distance: 113, azi: 180.2 }, { name: '桃園市中壢區', distance: 39.7, azi: 263.9 }, { name: '新北市八里區', distance: 27, azi: 308.2 }] }
+        ];
+
+        // 初始化下拉選單
+        const selectEl = document.getElementById('quiz-select');
+        quizData.forEach((quiz, index) => {
+            const option = document.createElement('option');
+            option.value = index;
+            option.textContent = `題庫 ${quiz.id}`;
+            selectEl.appendChild(option);
+        });
+
+        let currentQuizIndex = 0;
+
+        // 物理模擬相關設定與狀態
+        const layoutEl = document.querySelector('.quiz-layout');
+        let layoutWidth = layoutEl.clientWidth;
+        let layoutHeight = layoutEl.clientHeight || 520;
+
+        window.addEventListener('resize', () => {
+            layoutWidth = layoutEl.clientWidth;
+            layoutHeight = layoutEl.clientHeight || 520;
+            startSimulation();
+        });
+
+        // 初始化 5 個卡片資料結構
+        let cards = [];
+        for (let i = 0; i < 5; i++) {
+            cards.push({
+                element: document.getElementById(`card-${i}`),
+                x: 0,
+                y: 0,
+                vx: 0,
+                vy: 0,
+                w: 155,
+                h: 58,
+                idealX: 0,
+                idealY: 0,
+                azi: 0,
+                name: '',
+                distance: 0
+            });
+        }
+
+        let animId = null;
+
+        function startSimulation() {
+            if (!animId) {
+                tick();
+            }
+        }
+
+        function tick() {
+            const active = updatePhysics();
+            drawSVG();
+            if (active) {
+                animId = requestAnimationFrame(tick);
+            } else {
+                animId = null;
+            }
+        }
+
+        function updatePhysics() {
+            const cx = layoutWidth / 2;
+            const cy = layoutHeight / 2;
+
+            // 動態獲取卡片的寬高（以防文字折行導致高度變動）
+            cards.forEach(card => {
+                card.w = card.element.offsetWidth || 155;
+                card.h = card.element.offsetHeight || 58;
+            });
+
+            const compassRadius = 160;
+            const cardMargin = 5;
+
+            // 1. 計算理想位置（依據方位角計算自適應半徑 R，確保不遮擋中央羅盤）
+            cards.forEach(card => {
+                const rad = card.azi * Math.PI / 180;
+                // 橢圓形狀逼近法來動態決定與圓心的距離，避免卡片左右太寬時疊到圓圈
+                const R = compassRadius + Math.abs(Math.sin(rad)) * (card.w / 2) + Math.abs(Math.cos(rad)) * (card.h / 2) + 20;
+
+                card.idealX = cx + Math.sin(rad) * R;
+                card.idealY = cy - Math.cos(rad) * R;
+
+                // 彈力吸引至理想位置
+                const kAttract = 0.08;
+                card.vx += (card.idealX - card.x) * kAttract;
+                card.vy += (card.idealY - card.y) * kAttract;
+            });
+
+            // 2. 卡片之間的斥力，至少維持 5px 距離
+            for (let i = 0; i < cards.length; i++) {
+                for (let j = i + 1; j < cards.length; j++) {
+                    const dx = cards[i].x - cards[j].x;
+                    const dy = cards[i].y - cards[j].y;
+
+                    const minDistX = (cards[i].w + cards[j].w) / 2 + cardMargin;
+                    const minDistY = (cards[i].h + cards[j].h) / 2 + cardMargin;
+
+                    const overlapX = minDistX - Math.abs(dx);
+                    const overlapY = minDistY - Math.abs(dy);
+
+                    if (overlapX > 0 && overlapY > 0) {
+                        const kRepel = 0.525;
+                        // 沿著重合度最小的軸推開以保證平穩
+                        if (overlapX < overlapY) {
+                            const sign = dx > 0 ? 1 : -1;
+                            const force = sign * overlapX * kRepel;
+                            cards[i].vx += force;
+                            cards[j].vx -= force;
+                        } else {
+                            const sign = dy > 0 ? 1 : -1;
+                            const force = sign * overlapY * kRepel;
+                            cards[i].vy += force;
+                            cards[j].vy -= force;
+                        }
+                    }
+                }
+            }
+
+            // 3. 羅盤中心的物理斥力，防止任何卡片覆蓋到羅盤
+            cards.forEach(card => {
+                const dcx = card.x - cx;
+                const dcy = card.y - cy;
+                const dist = Math.hypot(dcx, dcy) || 1;
+                const rad = Math.atan2(dcy, dcx);
+                const minCenterDist = compassRadius + Math.abs(Math.cos(rad)) * (card.w / 2) + Math.abs(Math.sin(rad)) * (card.h / 2) + 10;
+
+                if (dist < minCenterDist) {
+                    const push = (minCenterDist - dist) * 0.3;
+                    card.vx += (dcx / dist) * push;
+                    card.vy += (dcy / dist) * push;
+                }
+            });
+
+            // 4. 套用速度、阻尼與邊界限制
+            const damping = 0.75;
+            let moving = false;
+
+            cards.forEach(card => {
+                card.vx *= damping;
+                card.vy *= damping;
+                card.x += card.vx;
+                card.y += card.vy;
+
+                // 邊界碰撞限制 (留 10px 內縮邊緣)
+                const halfW = card.w / 2;
+                const halfH = card.h / 2;
+
+                if (card.x < halfW + 10) {
+                    card.x = halfW + 10;
+                    card.vx = 0;
+                } else if (card.x > layoutWidth - halfW - 10) {
+                    card.x = layoutWidth - halfW - 10;
+                    card.vx = 0;
+                }
+
+                if (card.y < halfH + 10) {
+                    card.y = halfH + 10;
+                    card.vy = 0;
+                } else if (card.y > layoutHeight - halfH - 10) {
+                    card.y = layoutHeight - halfH - 10;
+                    card.vy = 0;
+                }
+
+                // 更新 DOM 位置 (使用 translate3d 提高渲染效能與流暢度)
+                card.element.style.transform = `translate3d(${card.x - halfW}px, ${card.y - halfH}px, 0)`;
+
+                // 若速度或偏離理想位置的距離大於閾值，則持續進行物理模擬
+                const speed = Math.hypot(card.vx, card.vy);
+                const deviation = Math.hypot(card.x - card.idealX, card.y - card.idealY);
+                if (speed > 0.05 || deviation > 0.5) {
+                    moving = true;
+                }
+            });
+
+            return moving;
+        }
+
+        function drawSVG() {
+            const cx = layoutWidth / 2;
+            const cy = layoutHeight / 2;
+
+            const guideLinesGroup = document.getElementById('guide-lines-group');
+            const arrowsGroup = document.getElementById('arrows-group');
+            const badgesGroup = document.getElementById('badges-group');
+
+            // 清空舊線段與箭頭
+            guideLinesGroup.innerHTML = '';
+            arrowsGroup.innerHTML = '';
+            badgesGroup.innerHTML = '';
+
+            cards.forEach((card, i) => {
+                // 絕對方向的單位向量 (依據原始方位角 azi 計算，不隨卡片偏移而改變)
+                const rad = card.azi * Math.PI / 180;
+                const ux = Math.sin(rad);
+                const uy = -Math.cos(rad);
+
+                // 箭頭起點：中央圓形節點邊緣 (半徑 50px)
+                const arrowStartX = cx + ux * 50;
+                const arrowStartY = cy + uy * 50;
+
+                // 箭頭終點：羅盤外圓範圍內 (長度由 card.arrowLength 決定)
+                const arrowEndX = cx + ux * card.arrowLength;
+                const arrowEndY = cy + uy * card.arrowLength;
+
+                // 1. 繪製黑色的實線箭頭
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', arrowStartX);
+                line.setAttribute('y1', arrowStartY);
+                line.setAttribute('x2', arrowEndX);
+                line.setAttribute('y2', arrowEndY);
+                line.setAttribute('stroke', '#212529');
+                line.setAttribute('stroke-width', '2.5');
+                line.setAttribute('marker-end', 'url(#arrowhead)');
+
+                // 加一個懸浮文字提示
+                const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+                title.textContent = `${card.name}: ${card.distance} km (${card.azi}°)`;
+                line.appendChild(title);
+
+                arrowsGroup.appendChild(line);
+
+                // 2. 繪製虛線引導線：從箭頭終點連接到卡片邊緣
+                // 卡片邊緣由卡片外接框計算，簡單起見直接連到卡片中心 (因為卡片有 white bg 和 z-index: 15 會壓在線上面)
+                const guideLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                guideLine.setAttribute('x1', arrowEndX);
+                guideLine.setAttribute('y1', arrowEndY);
+                guideLine.setAttribute('x2', card.x);
+                guideLine.setAttribute('y2', card.y);
+                guideLine.setAttribute('stroke', '#cbd5e1');
+                guideLine.setAttribute('stroke-width', '1.5');
+                guideLine.setAttribute('stroke-dasharray', '4 4');
+                guideLinesGroup.appendChild(guideLine);
+            });
+        }
+
+        function loadQuiz(index) {
+            currentQuizIndex = parseInt(index);
+            const quiz = quizData[currentQuizIndex];
+            document.getElementById('quiz-title').textContent = `地理猜謎：題庫 ${quiz.id}`;
+
+            // 隱藏前一題答案
+            const ansDisplay = document.getElementById('answer-display');
+            ansDisplay.style.display = 'none';
+            document.getElementById('show-answer-btn').textContent = '顯示答案';
+
+            const cx = layoutWidth / 2;
+            const cy = layoutHeight / 2;
+
+            // 填入 5 個卡片資料並初始化物理模擬位置 (會加入微小隨機量破壞對稱性)
+            quiz.hints.forEach((hint, i) => {
+                const card = cards[i];
+                card.azi = hint.azi;
+                card.name = hint.name;
+                card.distance = hint.distance;
+
+                // 更新外圍看板文字
+                card.element.innerHTML = `
+                    <span class="town-name">${hint.name}</span>
+                    <span class="town-dist">${hint.distance} km</span>
+                `;
+
+                // 測量實際高寬
+                card.w = card.element.offsetWidth || 155;
+                card.h = card.element.offsetHeight || 58;
+            });
+
+            // 計算 5 個等差長度的箭頭
+            const dists = cards.map(c => c.distance);
+            const dMin = Math.min(...dists);
+            const dMax = Math.max(...dists);
+
+            // 判斷等比縮放極值 (以 max 為 180px 去除箭頭三角形約 160px)
+            let lMin = (dMin / dMax) * 160;
+            if (lMin < 80) {
+                lMin = 80;
+            }
+
+            // 計算出 5 個等差的長度階層
+            const levels = [];
+            for (let k = 0; k < 5; k++) {
+                levels.push(lMin + k * (160 - lMin) / 4);
+            }
+
+            // 使用內插法對應出每個距離的等差長度 (四捨五入到對應的階層)
+            cards.forEach(card => {
+                let k = 0;
+                if (dMax > dMin) {
+                    k = Math.round((card.distance - dMin) / (dMax - dMin) * 4);
+                }
+                card.arrowLength = Math.round(levels[k]);
+            });
+
+            quiz.hints.forEach((hint, i) => {
+                const card = cards[i];
+                const rad = hint.azi * Math.PI / 180;
+                const R = 160 + Math.abs(Math.sin(rad)) * (card.w / 2) + Math.abs(Math.cos(rad)) * (card.h / 2) + 20;
+
+                // 初始化位置設在理想方位，並加入少許隨機以防完美對稱時沒有推力
+                const randOffset = (Math.random() - 0.5) * 5;
+                card.x = cx + Math.sin(rad) * R + randOffset;
+                card.y = cy - Math.cos(rad) * R + randOffset;
+                card.vx = 0;
+                card.vy = 0;
+            });
+
+            // 開始物理模擬
+            startSimulation();
+        }
+
+        function toggleAnswer() {
+            const ansDisplay = document.getElementById('answer-display');
+            const btn = document.getElementById('show-answer-btn');
+            const quiz = quizData[currentQuizIndex];
+
+            if (ansDisplay.style.display === 'none' || ansDisplay.style.display === '') {
+                ansDisplay.textContent = `答案是：${quiz.target}`;
+                ansDisplay.style.display = 'block';
+                btn.textContent = '隱藏答案';
+            } else {
+                ansDisplay.style.display = 'none';
+                btn.textContent = '顯示答案';
+            }
+        }
+
+        // 初始化預設第一題
+        loadQuiz(0);
+    </script>
+</body>
+
+</html>
